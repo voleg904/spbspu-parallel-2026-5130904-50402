@@ -267,7 +267,7 @@ namespace vishnevskiy
       }
       catch (const std::out_of_range &e)
       {
-        throw std::out_of_range("No name found");
+        throw std::runtime_error("No name found");
       }
       shapeSet.push_back(el);
     }
@@ -288,7 +288,7 @@ namespace vishnevskiy
     }
     catch (const std::out_of_range &e)
     {
-      throw std::out_of_range("No name found");
+      throw std::runtime_error("No name found");
     }
   }
 
@@ -302,7 +302,7 @@ namespace vishnevskiy
     std::map< std::string, circ_t >::iterator it = map.sets.find(name);
     if (it == map.sets.end())
     {
-      throw std::out_of_range("No name found");
+      throw std::runtime_error("No name found");
     }
 
     const circ_t &shapeSet = it->second;
@@ -327,10 +327,10 @@ namespace vishnevskiy
     }
     catch (const std::out_of_range &e)
     {
-      throw std::out_of_range("No name found");
+      throw std::runtime_error("No name found");
     }
     CircleBoundaries b = getBoundaries(res);
-    o << "(" << b.maxX_ << b.maxY_ << ") (" << b.minX_ << b.minY_ << ")" << "\n";
+    o << "(" << b.maxX_ << " " << b.maxY_ << ") (" << b.minX_ << " " << b.minY_ << ")" << "\n";
   }
 
   void frameset(std::istream &i, std::ostream &o, Maps &map)
@@ -344,7 +344,7 @@ namespace vishnevskiy
     std::map< std::string, circ_t >::iterator it = map.sets.find(name);
     if (it == map.sets.end())
     {
-      throw std::out_of_range("No name found");
+      throw std::runtime_error("No name found");
     }
 
     circ_t &shapeSet = it->second;
@@ -488,7 +488,7 @@ namespace vishnevskiy
   void area_on(std::istream &i, std::ostream &, Maps &map)
   {
     std::string procName, calcName, setName;
-    size_t threads = 0, tries = 0;
+    long long threads = 0, tries = 0;
     if (!(i >> procName >> calcName >> setName >> threads >> tries))
     {
       throw std::runtime_error("Invalid arguments");
@@ -507,7 +507,7 @@ namespace vishnevskiy
     {
       throw std::runtime_error("Invalid set");
     }
-    if (threads == 0 || tries == 0)
+    if (threads <= 0 || tries <= 0)
     {
       throw std::runtime_error("Invalid arguments");
     }
